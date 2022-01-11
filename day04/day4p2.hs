@@ -12,5 +12,3 @@ main = putStrLn . show . fst . head . dropWhile (not . isPrefixOf ("000000") . s
     where
         generator :: [(Int, String)]
         generator = [(i, show . md5 . C8.pack $ "ckczppom" ++ show i) | i <- [1..]]
-#!/usr/bin/env stack
--- stack --resolver lts-18.18 script
