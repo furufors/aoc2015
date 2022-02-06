@@ -52,19 +52,13 @@ rings   = [ ( 25, 1, 0)
 
 -- Returns True if the first player wins
 battle :: Stats -> Stats -> Bool
-battle a b = let (a1          , b1@(bh1,_,_)) = fstPlayer a  b
-                 (a2@(ah2,_,_), b2          ) = sndPlayer a1 b1
-             in if bh1 <= 0
-                then True
-                else if ah2 <= 0
-                     then False
-                     else battle a2 b2
+battle a b = let b1@(bh1,_,_) = turn a b
+                 a1@(ah1,_,_) = turn b a
+             in if bh1 <= 0 then True
+                else if ah1 <= 0 then False
+                     else battle a1 b1
     where
-        fstPlayer :: Stats -> Stats -> (Stats, Stats)
-        fstPlayer (ahp, adm, aar) (bhp, bdm, bar) =
+        turn :: Stats -> Stats -> Stats
+        turn (ahp, adm, aar) (bhp, bdm, bar) =
             let damage = max (adm - bar) 1
-            in ((ahp, adm, aar), (bhp - damage, bdm, bar))
-
-        sndPlayer :: Stats -> Stats -> (Stats, Stats)
-        sndPlayer a b = let (b', a') = fstPlayer b a
-                        in (a', b')
+            in (bhp - damage, bdm, bar)
