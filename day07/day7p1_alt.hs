@@ -12,10 +12,8 @@ data Expr = Not Addr | And Addr Addr | End Addr | Or Addr Addr | Rsh Addr Int | 
 type Connections = M.Map Addr Expr
 
 main :: IO ()
-main = interact $ resolve "a" . hardwireB . M.fromList . parMap rpar parseIn . lines
+main = interact $ resolve "a" . M.fromList . parMap rpar parseIn . lines
     where
-        hardwireB :: Connections -> Connections
-        hardwireB = M.insert "b" (Vil 16076)
         resolve :: String -> Connections -> String
         resolve addr cs = let expr = getVil addr (deepresolve cs) in show expr
 
